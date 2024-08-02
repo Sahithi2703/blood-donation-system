@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome Page</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <button onclick="location.href='index.html'">Home</button>
+        <button onclick="location.href='register.html'">Register</button>
+        <button onclick="location.href='login.html'">Login</button>
+    </nav>
+    <div class="hero-video">
+        <video autoplay muted loop>
+            <source src="homevideo1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="blood-donation-message">
+        <h2>Blood Donation</h2>
+        <p>Join us in saving lives through blood donation. Your contribution is invaluable.</p>
+    </div>
+    <!-- Find a Donor Section -->
+    <div class="find-donor">
+        <h2>Find a Donor</h2>
+        <form id="donorForm">
+            <input type="text" placeholder="Name" required>
+            <input type="tel" placeholder="Phone Number" required>
+            <input type="email" placeholder="Email" required>
+            <input type="text" placeholder="Blood Group" required>
+            <input type="text" placeholder="State" required>
+            <input type="text" placeholder="City" required>
+            <div id="map"></div> <!-- Map container -->
+            <input type="hidden" id="location" name="location" required>
+            <button type="submit">Find Donor</button>
+        </form>
+    </div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map').setView([12.9716, 77.5946], 13); // Bengaluru's location
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var marker = L.marker([12.9716, 77.5946], {draggable: true}).addTo(map); // Marker at Bengaluru
+    marker.on('dragend', function(e) {
+        var position = marker.getLatLng();
+        document.getElementById('location').value = `${position.lat},${position.lng}`;
+    });
+
+    document.getElementById('donorForm').onsubmit = function(e) {
+        e.preventDefault(); // Prevent the default form submission
+        var location = document.getElementById('location').value;
+        console.log("Form submitted with location: " + location);
+        // Here you can handle the form submission as needed, e.g., using AJAX to send data to the server
+    };
+</script>
+
+</body>
+</html>
